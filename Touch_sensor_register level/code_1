@@ -1,0 +1,23 @@
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(void) {
+    // Configure pin D2 (PD2) as input
+    DDRD &= ~(1 << PD2); // Clear PD2 bit to set as input
+
+    // Configure pin D13 (PB5) as output
+    DDRB |= (1 << PB5);  // Set PB5 bit to configure as output
+
+    while (1) {
+        // Read the state of the touch sensor on PD2
+        if (PIND & (1 << PD2)) {
+            // If touch sensor is activated, turn LED on
+            PORTB |= (1 << PB5); // Set PB5 high
+        } else {
+            // Otherwise, turn LED off
+            PORTB &= ~(1 << PB5); // Set PB5 low
+        }
+        
+        _delay_ms(10); // Small delay to debounce the input
+    }
+}
